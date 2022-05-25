@@ -33,13 +33,19 @@ async function run(){
         })
 
         // reviews section 
-        // app.get('/reviews', async(req,res) =>{
-        //     const query = {};
-        //     const cursor = reviewsCollection.find(query);
-        //     const result = await cursor.toArray();
-        //     res.send(result)
-        // })
+        app.get('/reviews', async(req,res) =>{
+            const query = {};
+            const cursor = reviewsCollection.find(query);
+            const result = await cursor.toArray();
+            res.send(result)
+        })
 
+        // add new review  
+        app.post('/reviews' , async (req,res) =>{
+            const reviewer =  req.body;
+            const result = await reviewsCollection.insertOne(reviewer);
+            res.send(result)
+          })
 
 
 
