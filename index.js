@@ -24,6 +24,7 @@ async function run(){
         const productsCollection = client.db('Ptools').collection('products')
         const reviewsCollection = client.db('Ptools').collection('reviews')
         const usersCollection = client.db('Ptools').collection('users')
+        const ordersCollection = client.db('Ptools').collection('orders')
         
         // products section 
         app.get('/products', async(req,res) =>{
@@ -41,6 +42,20 @@ async function run(){
             res.send(product);
         })
 
+        //oreders section
+        app.post('/orders', async (req,res) =>{
+            const order = req.body;
+            const result = await ordersCollection.insertOne(order);
+            res.send(result);
+        })
+
+        app.get('/orders', async(req,res) =>{
+            const query = {};
+            const cursor = ordersCollection.find(query);
+            const result = await cursor.toArray();
+            res.send(result)
+        })
+        
 
         // reviews section 
         app.get('/reviews', async(req,res) =>{
