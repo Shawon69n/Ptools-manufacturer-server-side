@@ -37,7 +37,14 @@ async function run(){
 
         app.post('/product' , async (req,res) =>{
             const productInfo =  req.body;
-            const result = await productsCollection.insertOne(productInfo);
+            const name = productInfo.name;
+            const details = productInfo.details;
+            const image = productInfo.image;
+            const price = parseInt(productInfo.price)
+            const minimumQuantity = parseInt(productInfo.minimumQuantity)
+            const availableQuantity = parseInt(productInfo.availableQuantity)
+            const newProduct = {name,details,image,minimumQuantity,availableQuantity,price}
+            const result = await productsCollection.insertOne(newProduct);
             res.send(result)
           })
 
