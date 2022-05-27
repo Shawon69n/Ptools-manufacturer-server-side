@@ -25,6 +25,7 @@ async function run(){
         const reviewsCollection = client.db('Ptools').collection('reviews')
         const usersCollection = client.db('Ptools').collection('users')
         const ordersCollection = client.db('Ptools').collection('orders')
+        const paymentCollection= client.db('Ptools').collection('payments')
         
         // products section 
         app.get('/products', async(req,res) =>{
@@ -61,6 +62,23 @@ async function run(){
             const orderCancel = await ordersCollection.deleteOne(query);
             res.send(orderCancel);
         })
+
+         // update order with transactionId 
+         app.patch('/orders/:id',  async(req, res) =>{
+            const id  = req.params.id;
+            const payment = req.body;
+            const filter = {_id: ObjectId(id)};
+            const updatedDoc = {
+              $set: {
+                paid: true,
+                transactionId: payment.transactionId
+              }
+            }
+      
+            const result = await paymentCollection.insertOne(payment);
+            const updatedOrder = await ordersCollection.updateOne(filter, updatedDoc);
+            res.send(updatedOrder);
+          })
         
         // get payment for that order 
         app.get('/orders/:id',async (req,res) =>{
