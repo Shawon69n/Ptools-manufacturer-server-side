@@ -55,13 +55,20 @@ async function run(){
             res.send(order)
             
           })
-        // app.get('/orders', async(req,res) =>{
-        //     const query = {};
-        //     const cursor = ordersCollection.find(query);
-        //     const result = await cursor.toArray();
-        //     res.send(result)
-        // })
+        app.delete('/orders/:id',async(req,res) =>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const orderCancel = await ordersCollection.deleteOne(query);
+            res.send(orderCancel);
+        })
         
+        // get payment for that order 
+        app.get('/orders/:id',async (req,res) =>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const orderInfo = await ordersCollection.findOne(query);
+            res.send(orderInfo);
+        })
 
         // reviews section 
         app.get('/reviews', async(req,res) =>{
@@ -84,6 +91,7 @@ async function run(){
              const result = await usersCollection.insertOne(user);
              res.send(result);
          }) 
+         
          
          app.get('/users', async (req,res) =>{
              const result = await usersCollection.find().toArray();
