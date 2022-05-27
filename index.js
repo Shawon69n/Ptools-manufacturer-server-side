@@ -26,6 +26,7 @@ async function run(){
         const usersCollection = client.db('Ptools').collection('users')
         const ordersCollection = client.db('Ptools').collection('orders')
         const paymentCollection= client.db('Ptools').collection('payments')
+        const userProfileCollection= client.db('Ptools').collection('profile')
         
         // products section 
         app.get('/products', async(req,res) =>{
@@ -173,6 +174,20 @@ async function run(){
                   payment_method_types:['card']
               });
               res.send({clientSecret : paymentIntent.client_secret})
+          })
+
+          //user profile
+          app.post('/myprofile', async(req,res) =>{
+            const profile = req.body;
+            const result = await userProfileCollection.insertOne(profile);
+            res.send(result);
+          })
+
+          app.get('/myprofile', async(req,res) =>{
+              const email = req.query.email
+              const query = {email : email}
+              const result = await userProfileCollection.findOne(query)
+              res.send(result);
           })
           
 
