@@ -49,12 +49,18 @@ async function run(){
             res.send(result);
         })
 
-        app.get('/orders', async(req,res) =>{
-            const query = {};
-            const cursor = ordersCollection.find(query);
-            const result = await cursor.toArray();
-            res.send(result)
-        })
+        app.get('/orders',async(req,res) =>{
+            const email = req.query.email;
+            const order = await ordersCollection.find({email:email}).toArray();
+            res.send(order)
+            
+          })
+        // app.get('/orders', async(req,res) =>{
+        //     const query = {};
+        //     const cursor = ordersCollection.find(query);
+        //     const result = await cursor.toArray();
+        //     res.send(result)
+        // })
         
 
         // reviews section 
