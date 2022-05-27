@@ -35,6 +35,14 @@ async function run(){
             res.send(result)
         })
 
+        app.post('/product' , async (req,res) =>{
+            const productInfo =  req.body;
+            const result = await productsCollection.insertOne(productInfo);
+            res.send(result)
+          })
+
+      
+
         //get single product detail
         app.get('/product/:id',async (req,res) =>{
             const id = req.params.id;
@@ -56,6 +64,14 @@ async function run(){
             res.send(order)
             
           })
+
+        app.get('/manageorders',async(req,res) =>{
+            const query = {};
+            const orders = await ordersCollection.find(query).toArray();
+            res.send(orders)
+            
+          })
+
         app.delete('/orders/:id',async(req,res) =>{
             const id = req.params.id;
             const query = {_id: ObjectId(id)};
