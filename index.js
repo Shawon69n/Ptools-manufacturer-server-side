@@ -80,7 +80,7 @@ async function run(){
             
           })
 
-        app.delete('/orders/:id',async(req,res) =>{
+        app.delete('/manageorders/:id',async(req,res) =>{
             const id = req.params.id;
             const query = {_id: ObjectId(id)};
             const orderCancel = await ordersCollection.deleteOne(query);
@@ -138,6 +138,13 @@ async function run(){
              const result = await usersCollection.find().toArray();
              res.send(result);
          })
+
+         app.delete('/user/:id',async(req,res) =>{
+          const id = req.params.id;
+          const query = {_id: ObjectId(id)};
+          const removeUser = await usersCollection.deleteOne(query);
+          res.send(removeUser);
+      })
 
          app.put('/users/:email', async (req,res) =>{
              const email = req.params.email;
