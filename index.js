@@ -134,11 +134,24 @@ async function run(){
              res.send(result);
          }) 
 
-       
-         
-         
          app.get('/users', async (req,res) =>{
              const result = await usersCollection.find().toArray();
+             res.send(result);
+         })
+
+         app.put('/users/:email', async (req,res) =>{
+             const email = req.params.email;
+             const userInfo = req.body;
+
+             const filter = {email : email}
+             const options = {upsert : true}
+             const updatedDoc = {
+               $set : {
+                 email : email,
+                 name : userInfo.name
+               }
+             }
+             const result = await usersCollection.updateOne(filter,updatedDoc,options);
              res.send(result);
          })
 
